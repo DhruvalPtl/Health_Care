@@ -13,14 +13,14 @@ if not firebase_admin._apps:
         st.error(f"Failed to initialize Firebase: {e}")
 
 firebase = pyrebase.initialize_app(st.secrets["firebaseconfig"])
-authentication = firebase.auth()
+authentication = firebase.auth() 
 
 class Database:
     def __init__(self,user_id):
         self.db = firebase.database()
         self.user_id = user_id
 
-    def chat_history(self):
+    def get_chat_history(self):
         try:
             chat_history = self.db.child("users").child(self.user_id).child("chat_history").get().val()
                 
@@ -32,42 +32,69 @@ class Database:
             st.error(f"Error fetching chat history: {e}")
             return []  # Return an empty list on error
 
-    def chat_history1(self):
-        data = self.db.child("users").child(self.user_id).child("chat_history").get()
-        return data.val()  # This returns a dict with push keys as keys
-
     
-    def symptom_history(self):
+    def get_symptom_history(self): # Renamed
         try:
             symptom_history = self.db.child("users").child(self.user_id).child("symptoms_history").get().val()
-            if symptom_history is None:
-                return []
-            else:
-                return symptom_history
+            # Return empty dict {} if None or on error, which is safer for iteration
+            return symptom_history if symptom_history else {}
         except Exception as e:
             st.error(f"Error fetching Symptom history: {e}")
+            return {} # Return empty dict
 
-    def save_chat_to_database(self,user_id, messages, symptoms, response):
-        """Save chat history to Firebase Realtime Database."""
+    def save_chat_to_database(self, user_id, messages, symptoms, response):
+        """Save chat or symptom history to Firebase Realtime Database."""
+        if not user_id:
+             st.warning("Cannot save history: User ID missing.")
+             return
         try:
-            if messages:
-                chat_data = [
-                    {
-                        "role": msg.role,
-                        "parts": [part.text for part in msg.parts]
-                    }
-                    for msg in messages
-                ]
-                # Write data to the user's chat history in Firebase
-                self.db.child("users").child(user_id).child("chat_history").set(chat_data)
-            elif symptoms and response:
-                chat_data ={
-                        "Question" : symptoms,
-                        "Answer" : response 
-                    }
-                self.db.child("users").child(user_id).child("symptoms_history").push(chat_data)
+            if messages is not None:
+                chat_data_to_save = messages
+                self.db.child("users").child(user_id).child("chat_history").set(chat_data_to_save)
+
+            elif symptoms is not None and response is not None:
+                symptom_data_entry = { "Question" : symptoms, "Answer" : response }
+                self.db.child("users").child(user_id).child("symptoms_history").push(symptom_data_entry)
+
         except Exception as e:
-            st.error(f"Failed to save chat history: {e}")
+            st.error(f"Failed to save history: {e}") # Original error
+        
+    def save_image_diagnosis_result(self, diagnosis_data):
+        """Save image diagnosis result to Firebase."""
+        if not self.user_id:
+            st.warning("Cannot save image history: User not logged in.")
+            return False
+        try:
+            self.db.child("users").child(self.user_id).child("image_history").push(diagnosis_data)
+            return True # Indicate success
+        except Exception as e:
+            st.error(f"Failed to save image diagnosis history: {e}")
+            return False # Indicate failure
+
+    # --- NEW Method: Get Image Diagnosis History ---
+    def get_image_history(self):
+        """Fetch image diagnosis history from Firebase."""
+        if not self.user_id:
+            return {}
+        try:
+            image_history = self.db.child("users").child(self.user_id).child("image_history").get().val()
+            return image_history if image_history else {}
+        except Exception as e:
+            st.error(f"Error fetching Image Diagnosis history: {e}")
+            return {}
+    
+    def delete_chat_history(self):
+        """Deletes the entire chat history list for the current user."""
+        if not self.user_id:
+            st.warning("Cannot delete chat history: User not logged in.")
+            return False
+        try:
+            # Remove the specific chat_history node for the user
+            self.db.child("users").child(self.user_id).child("chat_history").remove()
+            return True # Indicate success
+        except Exception as e:
+            st.error(f"Failed to delete chat history from database: {e}")
+            return False # Indicate failure
     
     
 class Authentication:
