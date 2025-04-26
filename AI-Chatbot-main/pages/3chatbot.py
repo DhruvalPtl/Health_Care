@@ -21,7 +21,7 @@ if Database and "user_id" in st.session_state:
     except Exception as e:
         st.error(f"Chatbot: Failed to initialize database: {e}")
         
-img = Image.open("icon/icon.png")
+img = Image.open(icon_path)
 st.set_page_config(
     page_title="General Chatbot",
     page_icon=img,
