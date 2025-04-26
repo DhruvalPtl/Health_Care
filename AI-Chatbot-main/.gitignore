@@ -2,7 +2,6 @@
 .streamlit
 brain_tumor_mri
 keras 
-model
 torch
 __pycache__
 chatbot
