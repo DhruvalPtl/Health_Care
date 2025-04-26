@@ -19,10 +19,6 @@ except ImportError:
     sidebar_auth_ui = None
 # Inside image_diagnosis.py
 import os
-# ... other imports ...
-
-# script_dir = "/mount/src/health_care/AI-Chatbot-main/model"
-# base_dir = os.path.join(script_dir, "..")
 
 with st.sidebar:
     st.title("Options & Account") # Combined title
@@ -62,31 +58,14 @@ except Exception as e:
 
 # --- Model Loading Functions (Use RELATIVE Paths!) ---
 script_dir = os.path.dirname(os.path.abspath(__file__))
-# Assumes 'model' folder is sibling to 'pages' folder (i.e., at project root)
-# Path goes UP from 'pages' directory ('..') then into 'model'
+
 model_dir_path = os.path.abspath(os.path.join(script_dir, "..", "model"))
-
-# --- Optional Debugging (Keep for first deployment run) ---
-st.write("--- Debug Info (Script-Relative) ---")
-st.write(f"Script directory: {script_dir}")
-st.write(f"Calculated Model directory: {model_dir_path}")
-try:
-    st.write(f"Files in Calculated Model directory: {os.listdir(model_dir_path)}")
-except Exception as e:
-    st.write(f"Could not list files in Calculated Model directory: {e}")
-    # List files one level up for context if model dir list fails
-    try: st.write(f"Files in directory ABOVE script dir: {os.listdir(os.path.join(script_dir, '..'))}")
-    except: pass
-st.write("--- End Debug Info ---")
-# --- End Debugging ---
-
 
 # --- Model Loading Functions (Using script-relative model_dir_path) ---
 @st.cache_resource
 def load_chest_xray_model():
     model_filename = "model.pth.tar"
     model_path = os.path.join(model_dir_path, model_filename) # Use calculated path
-    st.write(f"DEBUG: Attempting to load Chest X-ray from: {model_path}")
     if not os.path.exists(model_path):
          st.error(f"Chest X-ray Model file NOT FOUND at: {model_path}")
          return None
@@ -107,7 +86,6 @@ def load_chest_xray_model():
 def load_brain_tumor_binary_model():
     model_filename = "brain_tumor_classifier_mobilenet.keras"
     model_path = os.path.join(model_dir_path, model_filename) # Use calculated path
-    st.write(f"DEBUG: Attempting to load Binary Tumor from: {model_path}")
     if not os.path.exists(model_path):
          st.error(f"Binary Tumor Model file NOT FOUND at: {model_path}")
          return None
@@ -121,7 +99,6 @@ def load_brain_tumor_binary_model():
 def load_brain_tumor_type_model():
     model_filename = "Xception1_1,299,299,3.keras" # Filename with commas
     model_path = os.path.join(model_dir_path, model_filename) # Use calculated path
-    st.write(f"DEBUG: Attempting to load Type Tumor from: {model_path}")
     if not os.path.exists(model_path):
          st.error(f"Type Tumor Model file NOT FOUND at: {model_path}")
          return None
