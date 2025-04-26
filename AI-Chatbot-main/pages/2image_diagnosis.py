@@ -61,7 +61,7 @@ def load_chest_xray_model():
     num_ftrs = model.classifier.in_features
     model.classifier = torch.nn.Linear(num_ftrs, 14)
     # --- USE RELATIVE PATH ---
-    model_path = "Health_Care/AI-Chatbot-main/model/model.pth.tar"
+    model_path = "model/model.pth.tar"
     state_dict = torch.load(model_path, map_location=torch.device('cpu'))
     model.load_state_dict(state_dict, strict=False)
     model.eval()
@@ -70,14 +70,14 @@ def load_chest_xray_model():
 @st.cache_resource
 def load_brain_tumor_binary_model():
     # --- USE RELATIVE PATH ---
-    model_path = "Health_Care/AI-Chatbot-main/model/brain_tumor_classifier_mobilenet.keras"
+    model_path = "model/brain_tumor_classifier_mobilenet.keras"
     return tf.keras.models.load_model(model_path)
 
 @st.cache_resource
 def load_brain_tumor_type_model():
     # --- USE RELATIVE PATH ---
     # Correct the filename if it had commas before
-    model_path = "Health_Care/AI-Chatbot-main/model/Xception1_1,299,299,3.keras" # Assuming corrected filename
+    model_path = "model/Xception1_1,299,299,3.keras" # Assuming corrected filename
     return tf.keras.models.load_model(model_path)
 
 # --- Image Transformations & Labels (Keep as is) ---
