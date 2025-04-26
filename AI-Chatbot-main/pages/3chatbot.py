@@ -8,6 +8,10 @@ except ImportError: Authentication, logout, Database = None, None, None
 try:
     from sidebar import render_sidebar # Import the updated function
 except ImportError: render_sidebar = None
+import os
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+icon_path = os.path.join(script_dir, "..", "icon", "icon.png")
 
 # --- Initialize Auth and DB ---
 auth = Authentication() if Authentication else None
