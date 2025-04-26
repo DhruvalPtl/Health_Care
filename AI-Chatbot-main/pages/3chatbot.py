@@ -11,8 +11,7 @@ except ImportError: render_sidebar = None
 import os
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
-icon_path = os.path.join(script_dir, "..", "icon", "icon.png")
-
+icon_path = os.path.abspath(os.path.join(script_dir, "..", "icon", "icon.png"))
 # --- Initialize Auth and DB ---
 auth = Authentication() if Authentication else None
 db = None # Initialize db to None
