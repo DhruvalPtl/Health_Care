@@ -165,9 +165,13 @@ if "user_id" in st.session_state:
         st.warning(f"Could not initialize database: {e}. History saving disabled.")
 
 # --- Streamlit UI ---
-st.title("🩺 Medical Image Analysis (Educational Tool)")
-st.warning("⚠️ This tool is for educational demonstration only. Predictions are based on AI models and are **NOT** a substitute for professional medical diagnosis. Consult a qualified radiologist or doctor.")
-
+st.subheader("🖼️ Medical Image Analysis")
+st.markdown("""
+    Upload Chest X-ray or Brain Scan images for analysis by AI models (DenseNet, MobileNet, Xception).
+    *   Receive potential findings and confidence scores.
+    *   Get a simplified AI-generated explanation of the results.
+    *   **Reminder:** AI analysis can support understanding, but **final interpretation requires a medical professional.** Always discuss results with your doctor.
+    """)
 if IS_LOGGED_IN:
     diagnosis_type = st.selectbox("Select Analysis Type", ["Chest X-ray", "Brain Tumor"], key="diag_type_select") # Moved from sidebar
     uploaded_file = st.file_uploader(f"Upload a {diagnosis_type} Image", type=["png", "jpg", "jpeg"], key=f"uploader_{diagnosis_type}")

@@ -49,7 +49,7 @@ except Exception as e:
 with st.sidebar:
     st.markdown("---") # Separator after main sidebar content
     st.warning("**Reminder:** Educational tool only. Consult a doctor.") # Example: Disclaimer
-    st.page_link("pages/4History.py", label="View Symptom History", icon="📜") # Example: Link
+    st.page_link("pages/4📜_History.py", label="View Symptom History", icon="📜") # Example: Link
     if st.button("Reset Current Check", key="sidebar_reset"): # Example: Reset Button
          # Reset logic here...
          keys_to_clear = ["interaction_stage", "conversation_data", "ai_follow_up_question", "generated_summary", "db_save_error"]
@@ -57,10 +57,13 @@ with st.sidebar:
              if key in st.session_state: del st.session_state[key]
          st.rerun()
 
-# --- Main Page Content ---
-st.title("🧑‍⚕️ Symptom Information Assistant")
-st.caption("An educational tool to provide general information based on symptoms.")
-
+st.subheader("🧑‍⚕️ Symptom Information")
+st.markdown("""
+    Describe your symptoms and duration to receive **general educational information**.
+    *   The AI may ask a clarifying question.
+    *   Provides links to reputable health resources (NHS, CDC).
+    *   **Designed for information only.** Please **consult a healthcare professional** for diagnosis or treatment advice.
+    """)
 # --- CRITICAL DISCLAIMERS (Keep Prominent) ---
 st.error(
     """
