@@ -1,33 +1,23 @@
-# Core Streamlit App
 streamlit==1.44.1
-
-# Google AI / Gemini
 google-generativeai==0.8.5
 
-# Firebase Integration
 firebase-admin==6.7.0
 Pyrebase4==4.8.0
-# Pyrebase often needs these, safer to include explicitly:
-google-api-python-client>=2.0.0 # Version from freeze was 2.167.0
-google-auth-httplib2>=0.1.0   # Version from freeze was 0.2.0
-requests>=2.13.0             # Version from freeze was 2.32.3
-python-jwt>=2.0.1            # Version from freeze was 2.0.1
-gcloud>=0.18.0               # Version from freeze was 0.18.3
-oauth2client>=4.1.0          # Version from freeze was 4.1.3
-sseclient-py>=1.7            # Often needed by Pyrebase, freeze had sseclient==0.0.27, update if needed
-requests-toolbelt>=0.7.1     # Version from freeze was 0.10.1
 
-# Machine Learning Models
+google-api-python-client>=2.0.0 
+google-auth-httplib2>=0.1.0  
+requests>=2.13.0            
+python-jwt>=2.0.1            
+gcloud>=0.18.0            
+oauth2client>=4.1.0          
+sseclient-py>=1.7         
+requests-toolbelt>=0.7.1     
+
 torch==2.6.0
 torchvision==0.21.0
-tensorflow==2.19.0 # Or tensorflow-cpu==<version> if you used CPU only
-# Keras is now part of TF usually, but explicitly add if needed by your .keras model loading
-# keras==3.9.2
-
-# Data Handling & Images
+tensorflow==2.19.0 
 numpy==2.1.3
 pandas==2.2.3
 Pillow==11.2.1
 
-# Dependencies likely pulled in automatically, but sometimes good to specify:
-protobuf>=4.21.0,<6.0.0dev # google-generativeai needs specific protobuf range, freeze had 5.29.4
+protobuf>=4.21.0,<6.0.0dev

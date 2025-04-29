@@ -182,7 +182,7 @@ else:
     
 if IS_LOGGED_IN and uploaded_file is not None and diagnosis_type is not None:
     image = Image.open(uploaded_file).convert("RGB")
-    st.image(image, caption="Uploaded Image", use_container_width=True)
+    st.image(image, caption="Uploaded Image", width=350)
 
     # --- Initialize variables for saving ---
     results_to_save = {}

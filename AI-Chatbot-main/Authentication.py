@@ -30,17 +30,17 @@ class Database:
         
         except Exception as e:
             st.error(f"Error fetching chat history: {e}")
-            return []  # Return an empty list on error
+            return []  
 
     
-    def get_symptom_history(self): # Renamed
+    def get_symptom_history(self): 
         try:
             symptom_history = self.db.child("users").child(self.user_id).child("symptoms_history").get().val()
-            # Return empty dict {} if None or on error, which is safer for iteration
+           
             return symptom_history if symptom_history else {}
         except Exception as e:
             st.error(f"Error fetching Symptom history: {e}")
-            return {} # Return empty dict
+            return {} 
 
     def save_chat_to_database(self, user_id, messages, symptoms, response):
         """Save chat or symptom history to Firebase Realtime Database."""
@@ -66,12 +66,12 @@ class Database:
             return False
         try:
             self.db.child("users").child(self.user_id).child("image_history").push(diagnosis_data)
-            return True # Indicate success
+            return True
         except Exception as e:
             st.error(f"Failed to save image diagnosis history: {e}")
-            return False # Indicate failure
+            return False 
 
-    # --- NEW Method: Get Image Diagnosis History ---
+    
     def get_image_history(self):
         """Fetch image diagnosis history from Firebase."""
         if not self.user_id:
@@ -89,12 +89,12 @@ class Database:
             st.warning("Cannot delete chat history: User not logged in.")
             return False
         try:
-            # Remove the specific chat_history node for the user
+            
             self.db.child("users").child(self.user_id).child("chat_history").remove()
-            return True # Indicate success
+            return True 
         except Exception as e:
             st.error(f"Failed to delete chat history from database: {e}")
-            return False # Indicate failure
+            return False 
     
     
 class Authentication:
